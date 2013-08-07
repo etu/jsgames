@@ -4,11 +4,22 @@ My playground repo for building simple Javascript Games
 
 ** Table of Contents of repo
 
-*** game_01/ - Capture the goblin?
+*** game_01/ - Capture the goblin
 game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
 
 But with following modifications:
 - You can't walk outside of the canvas
 - The players position doesn't reset when the goblin is captured
 - The goblin moves away from the player, but does't understand corners or have any "smart AI" at all.
+
+*** game_02 - Jump on platforms
+game_02/ is based on this tutorial: http://michalbe.blogspot.se/2010/09/simple-game-with-html5-canvas-part-1.html
+
+But with following modifications:
+- I haven't implemented scrolling, at all.
+- The platforms does not appear at random and does have collision detection from bottom and the sides
+- Implemented falling of platforms better
+- My clouds moves at different speed depending on their size to make a fake-3d-feeling-effect
+
+This could be a fairly simple platformer game without too much modifications, but I didn't bother.
 
