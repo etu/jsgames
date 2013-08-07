@@ -1,13 +1,15 @@
 * jsgames
 
-My playground repo for building simple Javascript Games
+My playground repo for building simple Javascript Games.
+
+I try to keep an updated repo available here whenever I change something: http://img.failar.nu/etu/.jsgames/
 
 ** Table of Contents of repo
 
 *** game_01/ - Capture the goblin
 game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
 
-But with following modifications:
+**** With following modifications:
 - You can't walk outside of the canvas
 - The players position doesn't reset when the goblin is captured
 - The goblin moves away from the player, but does't understand corners or have any "smart AI" at all.
@@ -17,7 +19,7 @@ I won't do anything more with this.
 *** game_02 - Jump on platforms
 game_02/ is based on this tutorial: http://michalbe.blogspot.se/2010/09/simple-game-with-html5-canvas-part-1.html
 
-But with following modifications:
+**** With following modifications:
 - I haven't implemented scrolling, at all.
 - The platforms does not appear at random and does have collision detection from bottom and the sides
 - Implemented falling of platforms better
