@@ -188,6 +188,34 @@ var Projectile = function(who) {
 };
 
 
+// Monster Object
+var monsters = [];
+var Monster = function() {
+	var that = this;
+
+	that = {
+		x: canvas.width,                    // As far away as possibru
+		y: (Math.random() * canvas.height), // Random Y
+		width: 32,
+		height: 32,
+		speed: 50,
+		color: 'red',
+
+		update: function(delta) {
+			this.x = this.x - this.speed * delta;
+		},
+		render: function() {
+			ctx.fillStyle = this.color;
+			ctx.beginPath();
+			ctx.rect(this.x, this.y, this.width, this.height);
+			ctx.fill();
+		}
+	};
+
+	return that;
+};
+
+
 // Player input
 var keysDown = {};
 
@@ -205,6 +233,10 @@ var update = function(delta) {
 	bg.stars.update(delta); // Move stars!
 	player.update(delta);   // Animate player
 
+	for(var i in monsters) {    // Update monsters
+		monsters[i].update(delta);
+	}
+
 	for(var i in projectiles) { // Update projectiles
 		projectiles[i].update(delta);
 	}
@@ -220,6 +252,10 @@ var render = function() {
 	bg.sky.render();   // Render sky!
 	bg.stars.render(); // Render stars!
 	player.render();   // Render player!
+
+	for(var i in monsters) {    // Render monsters
+		monsters[i].render();
+	}
 
 	for(var i in projectiles) { // Render projectiles
 		projectiles[i].render();
