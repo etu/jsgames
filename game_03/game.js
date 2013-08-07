@@ -88,7 +88,7 @@ var player = (function() {
 		frameChangeDelta: 0.07,
 		currentFrame: 0,
 		shootDelta: 0,
-		shootCooldown: 0.1,
+		shootCooldown: 0.15,
 
 		update: function(delta) {                      // Update player
 			this.shootDelta += delta;
