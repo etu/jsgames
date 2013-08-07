@@ -32,7 +32,7 @@ game_03/ is what I think I want to keep working on for a while, I started it fro
 
 It's going to be a Nyancat shooter game in space.
 
-**** TODO
+**** To Implement
 - Implement things to collide with
 - Implement monsters
 - Implement collisiondetection for things to collide with and for projectiles
