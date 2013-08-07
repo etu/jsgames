@@ -80,15 +80,19 @@ var player = (function() {
 	that = {
 		x: canvas.width / 20,
 		y: (canvas.height - 38) / 2,
+		width:  60,
 		height: 38,
-		width: 60,
-		speed: 300,
-		frames: [],
-		frameDelta: 0,
-		frameChangeDelta: 0.07,
-		currentFrame: 0,
-		shootDelta: 0,
-		shootCooldown: 0.15,
+		speed: 300,              // Movement speed
+
+		// Values for animation of cat
+		frames: [],              // List of images used for animation
+		frameDelta: 0,           // Current time since last frame-shift
+		frameChangeDelta: 0.07,  // Time that need to pass before shifting frame
+		currentFrame: 0,         // Current frame in player animation
+
+		// Values for shooting cooldown
+		shootDelta: 0,           // Current time since last shot
+		shootCooldown: 0.15,     // Cooldown time for shooting
 
 		update: function(delta) {                      // Update player
 			this.shootDelta += delta;
@@ -151,12 +155,18 @@ var Projectile = function(who) {
 	var that = this;
 
 	that = {
-		who: who,
+		who: who, // Object of who is shooting?
+
+		// Place projectile top left in middle front of the shooter
 		x: who.x +  who.width,
 		y: who.y + (who.height / 2),
-		height: 4,
-		width: 15,
-		speed: 1000,
+
+		width: 15,   // Width  of projectile
+		height: 4,   // Height of projectile
+		speed: 1000, // Projectile movement speed
+		
+		color: 'yellow', // Projectile color!
+
 		update: function(delta) {
 			this.x = this.x + this.speed * delta;
 
@@ -167,7 +177,7 @@ var Projectile = function(who) {
 			}
 		},
 		render: function() { // Render projectile
-			ctx.fillStyle = 'yellow';
+			ctx.fillStyle = this.color;
 			ctx.beginPath();
 			ctx.rect(this.x, this.y, this.width, this.height);
 			ctx.fill();
@@ -199,9 +209,9 @@ var update = function(delta) {
 		projectiles[i].update(delta);
 	}
 
-	if(32 in keysDown) { player.shoot();         } // Space is pressed
-	if(38 in keysDown) { player.moveUp(delta);   } // Up    is pressed
-	if(40 in keysDown) { player.moveDown(delta); } // Down  is pressed
+	if(32 in keysDown) { player.shoot();         } // Space is pressed, shoot!
+	if(38 in keysDown) { player.moveUp(delta);   } // Up    is pressed, move up!
+	if(40 in keysDown) { player.moveDown(delta); } // Down  is pressed, move down!
 }
 
 
