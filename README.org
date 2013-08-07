@@ -4,7 +4,8 @@ My playground repo for building simple Javascript Games
 
 ** Table of Contents of repo
 
-*** game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
+*** game_01/ - Capture the goblin?
+game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
 
 But with following modifications:
 - You can't walk outside of the canvas
