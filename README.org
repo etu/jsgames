@@ -1,3 +1,11 @@
 * jsgames
 
 My playground repo for building simple Javascript Games
+
+** Table of Contents of repo
+
+  - game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]], but with following modifications:
+	- You can't walk outside of the canvas
+	- The players position doesn't reset when the goblin is captured
+	- The goblin moves away from the player, but does't understand corners or have any "smart AI" at all.
+
