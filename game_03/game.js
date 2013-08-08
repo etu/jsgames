@@ -310,6 +310,10 @@ var render = function() {
 	for(var i in projectiles) { // Render projectiles
 		projectiles[i].render();
 	}
+
+	ctx.fillStyle = 'white';
+	ctx.font = 'bold 10pt Arial';
+	ctx.fillText('Points: ' + gameState.points, 10, 20);
 }
 
 
@@ -374,6 +378,8 @@ var gameOver = function() {
 		ctx.fillStyle = 'white';
 		ctx.font = 'bold 20pt Arial';
 		ctx.fillText('GAME OVER', canvas.width / 2 - 80, canvas.height / 2 - 30);
+		ctx.font = 'bold 15px Arial';
+		ctx.fillText('Points: ' + gameState.points, canvas.width / 2 - 60, canvas.height / 2 - 10);
 	}, 100);
 };
 
