@@ -325,7 +325,7 @@ var gameState = {
 	gLoop: undefined,
 	points: 0,
 	state: true,
-	fps: 1000 / 60,
+	fps: 60,
 	then: Date.now()
 };
 
@@ -363,7 +363,7 @@ var gameLoop = function() {
 
 	gameState.then = now;
 	if(gameState.state) {
-		gameState.gLoop = setTimeout(gameLoop, gameState.fps);
+		gameState.gLoop = setTimeout(gameLoop, 1000 / gameState.fps);
 	}
 };
 
