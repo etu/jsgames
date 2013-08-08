@@ -203,6 +203,12 @@ var Monster = function() {
 
 		update: function(delta) {
 			this.x = this.x - this.speed * delta;
+
+			for(var i in monsters) { // Delete monsters outside of the screen
+				if(monsters[i].x + monsters[i].width < 0) {
+					delete monsters[i];
+				}
+			}
 		},
 		render: function() {
 			ctx.fillStyle = this.color;
