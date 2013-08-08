@@ -190,6 +190,8 @@ var Projectile = function(who) {
 
 // Monster Object
 var monsters = [];
+var monsterSpawnDelta = 0;
+var monsterSpawnRate = 3;
 var Monster = function() {
 	var that = this;
 
@@ -236,6 +238,13 @@ addEventListener('keyup', function (e) {
 
 // Update everything!
 var update = function(delta) {
+	monsterSpawnDelta += delta;
+
+	if(monsterSpawnDelta > monsterSpawnRate) {
+		monsterSpawnDelta = 0;
+		monsters.push(new Monster());
+	}
+	
 	bg.stars.update(delta); // Move stars!
 	player.update(delta);   // Animate player
 
