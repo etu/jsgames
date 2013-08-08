@@ -258,13 +258,13 @@ addEventListener('keyup', function (e) {
 
 // Update everything!
 var update = function(delta) {
-	monsterSpawnDelta += delta;
-
-	if(monsterSpawnDelta > monsterSpawnRate) {
+	if(monsterSpawnDelta > monsterSpawnRate) { // Spawn monster routine
 		monsterSpawnDelta = 0;
 		monsters.push(new Monster());
+	} else {
+		monsterSpawnDelta += delta;
 	}
-	
+
 	bg.stars.update(delta); // Move stars!
 	player.update(delta);   // Animate player
 
@@ -279,6 +279,15 @@ var update = function(delta) {
 	if(32 in keysDown) { player.shoot();         } // Space is pressed, shoot!
 	if(38 in keysDown) { player.moveUp(delta);   } // Up    is pressed, move up!
 	if(40 in keysDown) { player.moveDown(delta); } // Down  is pressed, move down!
+
+	for(var i in projectiles) { // Handle death of monsters
+		for(var j in monsters) {
+			if(isColliding(projectiles[i], monsters[j])) {
+				delete monsters[j];
+				continue;
+			}
+		}
+	}
 }
 
 
