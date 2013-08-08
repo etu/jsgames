@@ -225,6 +225,7 @@ var Monster = function() {
 
 
 // Detect if two objects is colliding or not
+// Thanks to: http://theodosis-gameprogramming.blogspot.gr/2011/07/collision-detection-by-detecting-no.html
 var isColliding = function(Object1, Object2) {
 	if(Object1.x + Object1.width < Object2.x) {
 		return false;
