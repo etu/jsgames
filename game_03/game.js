@@ -79,7 +79,7 @@ var player = (function() {
 
 	that = {
 		x: canvas.width / 20,
-		y: (canvas.height - 38) / 2,
+		y: 0,
 		width:  60,
 		height: 38,
 		speed: 300,              // Movement speed
@@ -323,6 +323,29 @@ var gameState = {
 };
 
 
+// Launch new game!
+var newGame = function() {
+	// Reset projectiles
+	projectiles = [];
+
+	// Reset all monsters
+	monsters          = [];
+	monsterSpawnDelta = 0;
+	monsterSpawnRate  = 3;
+
+	// Let there be new stars!
+	bg.stars.stars   = [];
+
+	// Reset player position
+	player.y = (canvas.height - player.height) / 2,
+
+	// Reset gameState
+	gameState.state  = true;
+	gameState.points = 0;
+	gameState.gLoop  = setTimeout(gameLoop, 1);
+};
+
+
 // Main game loop
 var gameLoop = function() {
 	var now = Date.now();
@@ -337,5 +360,23 @@ var gameLoop = function() {
 	}
 };
 
-gameState.gLoop = setTimeout(gameLoop, 1);
+
+// Game Over screen
+var gameOver = function() {
+	gameState.state = false;
+
+	clearTimeout(gameState.gLoop);
+
+	setTimeout(function() {
+		bg.sky.render();
+		bg.stars.render();
+
+		ctx.fillStyle = 'white';
+		ctx.font = 'bold 20pt Arial';
+		ctx.fillText('GAME OVER', canvas.width / 2 - 80, canvas.height / 2 - 30);
+	}, 100);
+};
+
+// Autolaunch game :)
+newGame();
 
