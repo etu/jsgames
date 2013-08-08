@@ -280,6 +280,12 @@ var update = function(delta) {
 	if(38 in keysDown) { player.moveUp(delta);   } // Up    is pressed, move up!
 	if(40 in keysDown) { player.moveDown(delta); } // Down  is pressed, move down!
 
+	for(var i in monsters) {
+		if(isColliding(player, monsters[i])) {
+			console.log('player is dead');
+		}
+	}
+	
 	for(var i in projectiles) { // Handle death of monsters
 		for(var j in monsters) {
 			if(isColliding(projectiles[i], monsters[j])) {
@@ -307,17 +313,29 @@ var render = function() {
 }
 
 
+// Object with current gameState
+var gameState = {
+	gLoop: undefined,
+	points: 0,
+	state: true,
+	fps: 1000 / 60,
+	then: Date.now()
+};
+
+
 // Main game loop
 var gameLoop = function() {
 	var now = Date.now();
-	var delta = (now - then) / 1000;
+	var delta = (now - gameState.then) / 1000;
 
 	update(delta);
 	render();
 
-	then = now;
+	gameState.then = now;
+	if(gameState.state) {
+		gameState.gLoop = setTimeout(gameLoop, gameState.fps);
+	}
 };
 
-var then = Date.now();
-setInterval(gameLoop, 1000 / 60);
+gameState.gLoop = setTimeout(gameLoop, 1);
 
