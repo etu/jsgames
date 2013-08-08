@@ -200,7 +200,7 @@ var Monster = function() {
 		y: (Math.random() * canvas.height), // Random Y
 		width: 32,
 		height: 32,
-		speed: 50,
+		speed: 100,
 		color: 'red',
 
 		update: function(delta) {
