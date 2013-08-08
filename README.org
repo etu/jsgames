@@ -34,9 +34,7 @@ It's going to be a Nyancat shooter game in space.
 
 **** To Implement
 - Implement things to collide with
-- Implement monsters
 - Implement collisiondetection for things to collide with and for projectiles
-- Implement that you can kill monsters
 - Implement that monsters can kill you
 - Implement score of some kind
 
@@ -45,4 +43,6 @@ It's going to be a Nyancat shooter game in space.
 - Implemented player with animated nyancat
 - Implemented basic projectiles so the cat can shoot (but got nothing to hit (so far!))
 - Implemented controlls for the cat (Up, Down, Space)
+- Implemented monsters
+- Implemented that you can kill monsters
 
