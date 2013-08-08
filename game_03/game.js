@@ -282,7 +282,7 @@ var update = function(delta) {
 
 	for(var i in monsters) {
 		if(isColliding(player, monsters[i])) {
-			console.log('player is dead');
+			gameOver();
 		}
 	}
 	
@@ -290,6 +290,9 @@ var update = function(delta) {
 		for(var j in monsters) {
 			if(isColliding(projectiles[i], monsters[j])) {
 				delete monsters[j];
+
+				gameState.points++; // Count points!
+
 				continue;
 			}
 		}
