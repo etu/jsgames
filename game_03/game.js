@@ -224,6 +224,25 @@ var Monster = function() {
 };
 
 
+// Detect if two objects is colliding or not
+var isColliding = function(Object1, Object2) {
+	if(Object1.x + Object1.width < Object2.x) {
+		return false;
+	}
+	if(Object1.x > Object2.x + Object2.width) {
+		return false;
+	}
+	if(Object1.y + Object1.height < Object2.y) {
+		return false;
+	}
+	if(Object1.y > Object2.y + Object2.height) {
+		return false;
+	}
+
+	return true;
+};
+
+
 // Player input
 var keysDown = {};
 
