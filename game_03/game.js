@@ -256,6 +256,11 @@ addEventListener('keyup', function (e) {
 }, false);
 
 
+// Timed points vars
+var timedPointsRate = 1;
+var timedPointsDelta = 0;
+
+
 // Update everything!
 var update = function(delta) {
 	if(monsterSpawnDelta > monsterSpawnRate) { // Spawn monster routine
@@ -263,6 +268,13 @@ var update = function(delta) {
 		monsters.push(new Monster());
 	} else {
 		monsterSpawnDelta += delta;
+	}
+
+	if(timedPointsDelta > timedPointsRate) {
+		timedPointsDelta = 0;
+		gameState.points++;
+	} else {
+		timedPointsDelta += delta;
 	}
 
 	bg.stars.update(delta); // Move stars!
