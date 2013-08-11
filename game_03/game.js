@@ -291,7 +291,7 @@ var update = function(delta) {
 			if(isColliding(projectiles[i], monsters[j])) {
 				delete monsters[j];
 
-				gameState.points++; // Count points!
+				gameState.points += 10; // Count points!
 
 				continue;
 			}
