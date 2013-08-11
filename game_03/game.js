@@ -214,6 +214,10 @@ var Monster = function() {
 			for(var i in monsters) { // Delete monsters outside of the screen
 				if(monsters[i].x + monsters[i].width < 0) {
 					delete monsters[i];
+
+					if(gameState.insane) {
+						monsters.push(new Monster());
+					}
 				}
 			}
 
@@ -316,6 +320,10 @@ var update = function(delta) {
 				if(isColliding(projectiles[i], monsters[j])) {
 					delete monsters[j];
 
+					if(gameState.insane) {
+						monsters.push(new Monster());
+					}
+
 					gameState.points += 10; // Count points!
 
 					continue;
@@ -356,7 +364,8 @@ var gameState = {
 	points: 0,
 	state: true,
 	fps: 60,
-	then: Date.now()
+	then: Date.now(),
+	insane: false
 };
 
 
