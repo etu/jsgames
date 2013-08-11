@@ -368,7 +368,7 @@ var gameState = {
 	state: true,
 	fps: 60,
 	then: Date.now(),
-	insane: true
+	insane: false
 };
 
 
