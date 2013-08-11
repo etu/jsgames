@@ -46,4 +46,6 @@ It's going to be a Nyancat shooter game in space.
 - Implemented that you can kill monsters
 - Implemented that monsters can kill you
 - Implemented score of some kind
+- Added graphics for monsters, it's spaceinvaders in 4 different colors!
+- Monsters shoot and they will kill you
 
