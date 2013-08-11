@@ -202,14 +202,26 @@ var Monster = function() {
 		height: 32,
 		speed: 100,
 		color: 'red',
+		shootDelta: 1,
+		shootCooldown: 2,
 
 		update: function(delta) {
+			this.shootDelta += delta;
+
 			this.x = this.x - this.speed * delta;
 
 			for(var i in monsters) { // Delete monsters outside of the screen
 				if(monsters[i].x + monsters[i].width < 0) {
 					delete monsters[i];
 				}
+			}
+
+			if(this.shootDelta > this.shootCooldown) {
+				this.shootDelta = 0;
+				var proj = Projectile(this);
+				proj.speed = -500;            // Inverse speed to move the projectiles left instead of right
+				proj.x = this.x - proj.width; // Place the projectile left of the monster to not insta-kill it :)
+				projectiles.push(proj);
 			}
 		},
 		render: function() {
@@ -299,13 +311,19 @@ var update = function(delta) {
 	}
 	
 	for(var i in projectiles) { // Handle death of monsters
-		for(var j in monsters) {
-			if(isColliding(projectiles[i], monsters[j])) {
-				delete monsters[j];
+		if(projectiles[i].who == player) { // only work on projectiles fired by the player on monsters
+			for(var j in monsters) {
+				if(isColliding(projectiles[i], monsters[j])) {
+					delete monsters[j];
 
-				gameState.points += 10; // Count points!
+					gameState.points += 10; // Count points!
 
-				continue;
+					continue;
+				}
+			}
+		} else { // Player did NOT shoot this projectile
+			if(isColliding(projectiles[i], player)) {
+				gameOver();
 			}
 		}
 	}
