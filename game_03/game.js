@@ -207,6 +207,9 @@ var Monster = function() {
 		img: new Image(),
 
 		update: function(delta) {
+			if(gameState.insane) { // If insane-mode is on, add delta one more time
+				this.shootDelta += delta;
+			}
 			this.shootDelta += delta;
 
 			this.x = this.x - this.speed * delta;
@@ -215,7 +218,7 @@ var Monster = function() {
 				if(monsters[i].x + monsters[i].width < 0) {
 					delete monsters[i];
 
-					if(gameState.insane) {
+					if(gameState.insane) { // Spawn a new monster when the old one is out of the screen while in insane-mode
 						monsters.push(new Monster());
 					}
 				}
@@ -320,7 +323,7 @@ var update = function(delta) {
 				if(isColliding(projectiles[i], monsters[j])) {
 					delete monsters[j];
 
-					if(gameState.insane) {
+					if(gameState.insane) { // Spawn a new monster if one dies in insane-mode
 						monsters.push(new Monster());
 					}
 
@@ -365,7 +368,7 @@ var gameState = {
 	state: true,
 	fps: 60,
 	then: Date.now(),
-	insane: false
+	insane: true
 };
 
 

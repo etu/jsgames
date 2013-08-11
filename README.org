@@ -48,4 +48,11 @@ It's going to be a Nyancat shooter game in space.
 - Implemented score of some kind
 - Added graphics for monsters, it's spaceinvaders in 4 different colors!
 - Monsters shoot and they will kill you
+- Added Hidden "Insane Mode"
+
+**** Insane Mode
+Fire up a JS-Console and type:
+: gameState.insane = true
+
+And just hit enter, then you will notice that monsters spawn more often, like when you kill one or it despawns, it will also decrease their shooting cooldown :-)
 
