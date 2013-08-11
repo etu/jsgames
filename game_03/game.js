@@ -198,12 +198,13 @@ var Monster = function() {
 	that = {
 		x: canvas.width,                    // As far away as possibru
 		y: (Math.random() * canvas.height), // Random Y
-		width: 32,
-		height: 32,
+		width: 33,
+		height: 24,
 		speed: 100,
 		color: 'red',
 		shootDelta: 1,
 		shootCooldown: 2,
+		img: new Image(),
 
 		update: function(delta) {
 			this.shootDelta += delta;
@@ -225,12 +226,11 @@ var Monster = function() {
 			}
 		},
 		render: function() {
-			ctx.fillStyle = this.color;
-			ctx.beginPath();
-			ctx.rect(this.x, this.y, this.width, this.height);
-			ctx.fill();
+			ctx.drawImage(this.img, this.x, this.y);
 		}
 	};
+
+	that.img.src = 'invader_' + (Math.floor(Math.random() * 10) % 4) + '.png'; // Choose a somewhat random image by random number 0-3
 
 	return that;
 };
