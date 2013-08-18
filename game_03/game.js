@@ -382,6 +382,7 @@ var render = function() {
 // Object with current gameState
 var gameState = {
 	gLoop:  undefined,
+	rLoop:  undefined,
 	points: 0,
 	state:  true,
 	fps:    60,
@@ -389,6 +390,8 @@ var gameState = {
 	insane: false,
 	audio:  ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably')
 };
+
+gameState.audio = false;
 
 
 // Launch new game!
@@ -413,20 +416,29 @@ var newGame = function() {
 	gameState.state  = true;
 	gameState.points = 0;
 	gameState.gLoop  = setTimeout(gameLoop, 1);
+	gameState.rLoop  = setTimeout(gameRenderLoop, 1);
 };
 
 
-// Main game loop
+// Game Render Loop
+var gameRenderLoop = function() {
+	render();
+
+	if(gameState.state) {
+		gameState.rLoop = setTimeout(gameRenderLoop, 1000 / gameState.fps);
+	}
+};
+
+// Game Update Loop
 var gameLoop = function() {
 	var now = Date.now();
 	var delta = (now - gameState.then) / 1000;
 
 	update(delta);
-	render();
 
 	gameState.then = now;
 	if(gameState.state) {
-		gameState.gLoop = setTimeout(gameLoop, 1000 / gameState.fps);
+		gameState.gLoop = setTimeout(gameLoop, 10); // Run every 10ms no matter what fps, cuz mainloop doesn't render :)
 	}
 };
 
