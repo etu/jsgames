@@ -391,8 +391,6 @@ var gameState = {
 	audio:  ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably')
 };
 
-gameState.audio = false;
-
 
 // Launch new game!
 var newGame = function() {
