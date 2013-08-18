@@ -12,9 +12,6 @@ canvas.height = 480;
 document.getElementById('gameWrapper').appendChild(canvas);
 
 
-// canPlayAudio
-var canPlayAudio = ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably');
-
 // Some preloaded sounds
 var audio = (function () {
 	var that = this;
@@ -27,6 +24,7 @@ var audio = (function () {
 
 	return that;
 })();
+
 
 // Background objects
 var bg = {
@@ -170,7 +168,7 @@ var projectiles = [];
 var Projectile = function(who) {
 	var that = this;
 
-	if(canPlayAudio) new Audio('pew.ogg').play();
+	if(gameState.audio) new Audio('pew.ogg').play();
 
 	that = {
 		who: who, // Object of who is shooting?
@@ -345,7 +343,7 @@ var update = function(delta) {
 						monsters.push(new Monster());
 					}
 
-					if(canPlayAudio) audio.point.play();
+					if(gameState.audio) audio.point.play();
 
 					gameState.points += 10; // Count points!
 
@@ -383,18 +381,19 @@ var render = function() {
 
 // Object with current gameState
 var gameState = {
-	gLoop: undefined,
+	gLoop:  undefined,
 	points: 0,
-	state: true,
-	fps: 60,
-	then: Date.now(),
-	insane: false
+	state:  true,
+	fps:    60,
+	then:   Date.now(),
+	insane: false,
+	audio:  ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably')
 };
 
 
 // Launch new game!
 var newGame = function() {
-	if(canPlayAudio) audio.newGame.play();
+	if(gameState.audio) audio.newGame.play();
 
 	// Reset projectiles
 	projectiles = [];
@@ -436,7 +435,7 @@ var gameLoop = function() {
 var gameOver = function() {
 	gameState.state = false;
 
-	if(canPlayAudio) audio.die.play();
+	if(gameState.audio) audio.die.play();
 
 	clearTimeout(gameState.gLoop);
 
@@ -454,4 +453,33 @@ var gameOver = function() {
 
 // Autolaunch game :)
 newGame();
+
+
+// Helper to toggle insanemode
+function toggleInsane() {
+	gameState.insane = !gameState.insane;
+
+	var insane = document.getElementById('insane');
+
+	if(gameState.insane) {
+		insane.style.display = 'block';
+	} else {
+		insane.style.display = 'none';
+	}
+}
+
+
+// Helper to toggle mute
+function toggleMute() {
+	if((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably') {
+		gameState.audio = !gameState.audio;
+
+		var mute = document.getElementById('mute');
+		if(gameState.audio) {
+			mute.style.display = 'none';
+		} else {
+			mute.style.display = 'block';
+		}
+	}
+}
 

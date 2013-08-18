@@ -11,3 +11,20 @@ html, body {
 	margin: auto;
 }
 
+#controls {
+	margin: auto;
+	width: 640px;
+}
+
+#mute {
+	float: right;
+	display: none;
+}
+
+#insane {
+	float: right;
+	background: red;
+	color: white;
+	display: none;
+}
+
