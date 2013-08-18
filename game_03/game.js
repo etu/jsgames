@@ -12,6 +12,22 @@ canvas.height = 480;
 document.getElementById('gameWrapper').appendChild(canvas);
 
 
+// canPlayAudio
+var canPlayAudio = ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably');
+
+// Some preloaded sounds
+var audio = (function () {
+	var that = this;
+
+	that = {
+		newGame: new Audio('charging.ogg'),
+		point: new Audio('get_point.ogg'),
+		die: new Audio('self_explode.ogg')
+	};
+
+	return that;
+})();
+
 // Background objects
 var bg = {
 	sky: {
@@ -100,7 +116,7 @@ var player = (function() {
 
 			if(this.frameDelta > 0.07) {
 				this.frameDelta = 0;
-				
+
 				this.currentFrame++;
 
 				if(this.currentFrame > 5) {
@@ -154,6 +170,8 @@ var projectiles = [];
 var Projectile = function(who) {
 	var that = this;
 
+	if(canPlayAudio) new Audio('pew.ogg').play();
+
 	that = {
 		who: who, // Object of who is shooting?
 
@@ -164,7 +182,7 @@ var Projectile = function(who) {
 		width: 15,   // Width  of projectile
 		height: 4,   // Height of projectile
 		speed: 1000, // Projectile movement speed
-		
+
 		color: 'yellow', // Projectile color!
 
 		update: function(delta) {
@@ -316,7 +334,7 @@ var update = function(delta) {
 			gameOver();
 		}
 	}
-	
+
 	for(var i in projectiles) { // Handle death of monsters
 		if(projectiles[i].who == player) { // only work on projectiles fired by the player on monsters
 			for(var j in monsters) {
@@ -326,6 +344,8 @@ var update = function(delta) {
 					if(gameState.insane) { // Spawn a new monster if one dies in insane-mode
 						monsters.push(new Monster());
 					}
+
+					if(canPlayAudio) audio.point.play();
 
 					gameState.points += 10; // Count points!
 
@@ -374,6 +394,8 @@ var gameState = {
 
 // Launch new game!
 var newGame = function() {
+	if(canPlayAudio) audio.newGame.play();
+
 	// Reset projectiles
 	projectiles = [];
 
@@ -413,6 +435,8 @@ var gameLoop = function() {
 // Game Over screen
 var gameOver = function() {
 	gameState.state = false;
+
+	if(canPlayAudio) audio.die.play();
 
 	clearTimeout(gameState.gLoop);
 
