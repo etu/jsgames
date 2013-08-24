@@ -1,7 +1,6 @@
 
 'use strict';
 
-// Setup canvas
 var canvas = document.createElement('canvas');
 var ctx    = canvas.getContext('2d');
 
@@ -9,8 +8,11 @@ canvas.id     = 'canvas';
 canvas.width  = 640;
 canvas.height = 480;
 
-document.getElementById('gameWrapper').appendChild(canvas);
+window.addEvent('domready', function() {
+	$('gameWrapper').appendChild(canvas);
 
+	newGame();
+});
 
 // Some preloaded sounds
 var audio = (function () {
@@ -43,13 +45,13 @@ var bg = {
 		color: '#ffffff',
 		render: function() { // Render stars
 			if(this.stars.length == 0) { // Populate this.stars
-				var count = Math.floor((Math.random() * 1000) % 500); // Decide amount
+				var count = Number.random(400, 600); // Decide amount
 
 				for(var i = 0; i < count; i++) { // Populate stars list with objects
 					this.stars.push({
-						x: (Math.random() * canvas.width),  // Random X
-						y: (Math.random() * canvas.height), // Random Y
-						speed: (Math.random() * 100)        // Random Speed
+						x: Number.random(0, canvas.width),  // Random X
+						y: Number.random(0, canvas.height), // Random Y
+						speed: Number.random(50, 70)        // Random Speed
 					});
 				}
 			}
@@ -79,7 +81,7 @@ var bg = {
 
 				if(this.stars[i].x < 0) {
 					this.stars[i].x     = canvas.width;
-					this.stars[i].speed = (Math.random() * 100);
+					this.stars[i].speed = Number.random(50, 70);
 				}
 			}
 		}
@@ -212,8 +214,8 @@ var Monster = function() {
 	var that = this;
 
 	that = {
-		x: canvas.width,                    // As far away as possibru
-		y: (Math.random() * canvas.height), // Random Y
+		x: canvas.width,                         // As far away as possibru
+		y: Number.random(0, canvas.height - 24), // Random Y
 		width: 33,
 		height: 24,
 		speed: 100,
@@ -253,7 +255,7 @@ var Monster = function() {
 		}
 	};
 
-	that.img.src = 'invader_' + (Math.floor(Math.random() * 10) % 4) + '.png'; // Choose a somewhat random image by random number 0-3
+	that.img.src = 'invader_' + Number.random(0, 3) + '.png'; // Choose a somewhat random image by random number 0-3
 
 	return that;
 };
@@ -261,7 +263,7 @@ var Monster = function() {
 
 // Detect if two objects is colliding or not
 // Thanks to: http://theodosis-gameprogramming.blogspot.gr/2011/07/collision-detection-by-detecting-no.html
-var isColliding = function(Object1, Object2) {
+function isColliding(Object1, Object2) {
 	if(Object1.x + Object1.width < Object2.x) {
 		return false;
 	}
@@ -297,7 +299,7 @@ var timedPointsDelta = 0;
 
 
 // Update everything!
-var update = function(delta) {
+function update(delta) {
 	if(monsterSpawnDelta > monsterSpawnRate) { // Spawn monster routine
 		monsterSpawnDelta = 0;
 		monsters.push(new Monster());
@@ -305,7 +307,7 @@ var update = function(delta) {
 		monsterSpawnDelta += delta;
 	}
 
-	if(timedPointsDelta > timedPointsRate) {
+	if(timedPointsDelta > timedPointsRate) { // Some points for just surviving
 		timedPointsDelta = 0;
 		gameState.points++;
 	} else {
@@ -315,63 +317,58 @@ var update = function(delta) {
 	bg.stars.update(delta); // Move stars!
 	player.update(delta);   // Animate player
 
-	for(var i in monsters) {    // Update monsters
-		monsters[i].update(delta);
-	}
+	Array.each(monsters, function(monster, id) {       // Update monsters
+		monster.update(delta);
+	});
 
-	for(var i in projectiles) { // Update projectiles
-		projectiles[i].update(delta);
-	}
+	Array.each(projectiles, function(projectile, id) { // Update projectiles
+		projectile.update(delta);
+	});
 
 	if(32 in keysDown) { player.shoot();         } // Space is pressed, shoot!
 	if(38 in keysDown) { player.moveUp(delta);   } // Up    is pressed, move up!
 	if(40 in keysDown) { player.moveDown(delta); } // Down  is pressed, move down!
 
-	for(var i in monsters) {
-		if(isColliding(player, monsters[i])) {
+	Array.each(monsters, function(monster, id) {
+		if(isColliding(player, monster)) {
 			gameOver();
 		}
-	}
+	});
 
-	for(var i in projectiles) { // Handle death of monsters
-		if(projectiles[i].who == player) { // only work on projectiles fired by the player on monsters
-			for(var j in monsters) {
-				if(isColliding(projectiles[i], monsters[j])) {
-					delete monsters[j];
+	Array.each(projectiles, function(projectile, pid) {
+		if(projectile.who == player) {
+			Array.each(monsters, function(monster, mid) {
+				if(isColliding(projectile, monster)) {
+					delete monsters[mid];
 
-					if(gameState.insane) { // Spawn a new monster if one dies in insane-mode
-						monsters.push(new Monster());
-					}
-
-					if(gameState.audio) audio.point.play();
+					if(gameState.insane) monsters.push(new Monster());// Spawn a new monster if one dies in insane-mode
+					if(gameState.audio)  audio.point.play();
 
 					gameState.points += 10; // Count points!
-
-					continue;
 				}
-			}
+			});
 		} else { // Player did NOT shoot this projectile
-			if(isColliding(projectiles[i], player)) {
+			if(isColliding(projectile, player)) {
 				gameOver();
 			}
 		}
-	}
+	});
 }
 
 
 // Render everything!
-var render = function() {
+function render() {
 	bg.sky.render();   // Render sky!
 	bg.stars.render(); // Render stars!
 	player.render();   // Render player!
 
-	for(var i in monsters) {    // Render monsters
-		monsters[i].render();
-	}
+	Array.each(monsters, function(monster, id) {
+		monster.render();
+	});
 
-	for(var i in projectiles) { // Render projectiles
-		projectiles[i].render();
-	}
+	Array.each(projectiles, function(projectile, id) {
+		projectile.render();
+	});
 
 	ctx.fillStyle = 'white';
 	ctx.font = 'bold 10pt Arial';
@@ -393,7 +390,7 @@ var gameState = {
 
 
 // Launch new game!
-var newGame = function() {
+function newGame() {
 	if(gameState.audio) audio.newGame.play();
 
 	// Reset projectiles
@@ -419,7 +416,7 @@ var newGame = function() {
 
 
 // Game Render Loop
-var gameRenderLoop = function() {
+function gameRenderLoop() {
 	render();
 
 	if(gameState.state) {
@@ -428,7 +425,7 @@ var gameRenderLoop = function() {
 };
 
 // Game Update Loop
-var gameLoop = function() {
+function gameLoop() {
 	var now = Date.now();
 	var delta = (now - gameState.then) / 1000;
 
@@ -442,7 +439,7 @@ var gameLoop = function() {
 
 
 // Game Over screen
-var gameOver = function() {
+function gameOver() {
 	gameState.state = false;
 
 	if(gameState.audio) audio.die.play();
@@ -460,9 +457,6 @@ var gameOver = function() {
 		ctx.fillText('Points: ' + gameState.points, canvas.width / 2 - 60, canvas.height / 2 - 10);
 	}, 100);
 };
-
-// Autolaunch game :)
-newGame();
 
 
 // Helper to toggle insanemode
