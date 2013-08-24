@@ -11,8 +11,21 @@ canvas.height = 480;
 window.addEvent('domready', function() {
 	$('gameWrapper').appendChild(canvas);
 
+	// Handle the custom fps field
+	$('fps').addEvent('change', function() {
+		var fps = $('fps').value;
+
+		if(fps < 1 || fps > 120) {
+			fps = 60;
+			$('fps').value = fps;
+		}
+
+		gameState.fps = fps;
+	});
+
 	newGame();
 });
+
 
 // Some preloaded sounds
 var audio = (function () {
