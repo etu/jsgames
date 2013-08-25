@@ -310,21 +310,30 @@ addEventListener('keyup', function (e) {
 var timedPointsRate = 1;
 var timedPointsDelta = 0;
 
+var levelChangeRate  = 10;
+var levelChangeDelta = 0;
 
 // Update everything!
 function update(delta) {
-	if(monsterSpawnDelta > monsterSpawnRate) { // Spawn monster routine
+	if(monsterSpawnDelta > (monsterSpawnRate / gameState.level)) { // Spawn monster routine
 		monsterSpawnDelta = 0;
 		monsters.push(new Monster());
 	} else {
 		monsterSpawnDelta += delta;
 	}
 
-	if(timedPointsDelta > timedPointsRate) { // Some points for just surviving
+	if((timedPointsDelta * gameState.level) > timedPointsRate) { // Some points for just surviving
 		timedPointsDelta = 0;
 		gameState.points++;
 	} else {
 		timedPointsDelta += delta;
+	}
+
+	if(levelChangeDelta > levelChangeRate) { // Change level every now and then
+		levelChangeDelta = 0;
+		gameState.level++;
+	} else {
+		levelChangeDelta += delta;
 	}
 
 	bg.stars.update(delta); // Move stars!
@@ -386,6 +395,7 @@ function render() {
 	ctx.fillStyle = 'white';
 	ctx.font = 'bold 10pt Arial';
 	ctx.fillText('Points: ' + gameState.points, 10, 20);
+	ctx.fillText('Level: ' + gameState.level, 10, 40);
 }
 
 
@@ -398,7 +408,8 @@ var gameState = {
 	fps:    60,
 	then:   Date.now(),
 	insane: false,
-	audio:  ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably')
+	audio:  ((new Audio()).canPlayType('audio/ogg; codecs=vorbis') == 'probably'),
+	level:  1
 };
 
 
@@ -411,7 +422,7 @@ function newGame() {
 
 	// Reset all monsters
 	monsters          = [];
-	monsterSpawnDelta = 0;
+	monsterSpawnDelta = 2;
 	monsterSpawnRate  = 3;
 
 	// Let there be new stars!
@@ -420,9 +431,17 @@ function newGame() {
 	// Reset player position
 	player.y = (canvas.height - player.height) / 2,
 
+	// Reset more values
+	timedPointsRate = 1;
+	timedPointsDelta = 0;
+
+	levelChangeRate  = 10;
+	levelChangeDelta = 0;
+
 	// Reset gameState
 	gameState.state  = true;
 	gameState.points = 0;
+	gameState.level  = 1;
 	gameState.gLoop  = setTimeout(gameLoop, 1);
 	gameState.rLoop  = setTimeout(gameRenderLoop, 1);
 };
