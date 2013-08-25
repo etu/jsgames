@@ -362,6 +362,7 @@ function update(delta) {
 			Array.each(monsters, function(monster, mid) {
 				if(isColliding(projectile, monster)) {
 					delete monsters[mid];
+					delete projectiles[pid];
 
 					if(gameState.insane) monsters.push(new Monster());// Spawn a new monster if one dies in insane-mode
 					if(gameState.audio)  audio.point.play();
