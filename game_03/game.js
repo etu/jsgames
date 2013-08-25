@@ -112,6 +112,7 @@ var player = (function() {
 		width:  60,
 		height: 38,
 		speed: 300,              // Movement speed
+		health: 5,               // Health of player, how many hits the cat can take from shots
 
 		// Values for animation of cat
 		frames: [],              // List of images used for animation
@@ -332,6 +333,7 @@ function update(delta) {
 	if(levelChangeDelta > levelChangeRate) { // Change level every now and then
 		levelChangeDelta = 0;
 		gameState.level++;
+		player.health += 2;
 	} else {
 		levelChangeDelta += delta;
 	}
@@ -367,12 +369,19 @@ function update(delta) {
 					if(gameState.insane) monsters.push(new Monster());// Spawn a new monster if one dies in insane-mode
 					if(gameState.audio)  audio.point.play();
 
+					levelChangeDelta--;
+
 					gameState.points += 10; // Count points!
 				}
 			});
 		} else { // Player did NOT shoot this projectile
 			if(isColliding(projectile, player)) {
-				gameOver();
+				if(player.health <= 0) {
+					gameOver();
+				} else {
+					player.health--;
+					delete projectiles[pid];
+				}
 			}
 		}
 	});
@@ -397,6 +406,8 @@ function render() {
 	ctx.font = 'bold 10pt Arial';
 	ctx.fillText('Points: ' + gameState.points, 10, 20);
 	ctx.fillText('Level: ' + gameState.level, 10, 40);
+	ctx.fillText('Health: ' + player.health, 10, 60);
+	ctx.fillText('Time to next level: ' + Math.floor((levelChangeRate - levelChangeDelta) * 100) / 100, 10, canvas.height - 10);
 }
 
 
@@ -431,6 +442,7 @@ function newGame() {
 
 	// Reset player position
 	player.y = (canvas.height - player.height) / 2,
+	player.health = 5; // Reset player health
 
 	// Reset more values
 	timedPointsRate = 1;
@@ -488,6 +500,7 @@ function gameOver() {
 		ctx.fillText('GAME OVER', canvas.width / 2 - 80, canvas.height / 2 - 30);
 		ctx.font = 'bold 15px Arial';
 		ctx.fillText('Points: ' + gameState.points, canvas.width / 2 - 60, canvas.height / 2 - 10);
+		ctx.fillText('Level: ' + gameState.level, canvas.width / 2 - 60, canvas.height / 2 + 10);
 	}, 100);
 };
 
