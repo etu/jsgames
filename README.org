@@ -35,7 +35,6 @@ It's going to be a Nyancat shooter game in space.
 **** To Implement
 - Implement things to collide with
 - Implement collisiondetection for things to collide with and for projectiles
-- Implement progression to make the game harder over time
 
 **** Already done
 - Implemented space with stars moving at different speed
@@ -49,6 +48,10 @@ It's going to be a Nyancat shooter game in space.
 - Added graphics for monsters, it's spaceinvaders in 4 different colors!
 - Monsters shoot and they will kill you
 - Added Hidden "Insane Mode"
+- Implemented progression to make the game harder over time
+- Added input type number where user can enter desired fps
+- When you shoot a monster, the projectile will dissapear on hit
+- You gain 2 health every level up
 
 **** Insane Mode
 Fire up a JS-Console and type:
