@@ -6,8 +6,8 @@ I try to keep an updated repo available here whenever I change something: http:/
 
 ** Table of Contents of repo
 
-*** game_01/ - Capture the goblin
-game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
+*** goblin/ - Capture the goblin
+goblin/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegames.com/how-to-make-a-simple-html5-canvas-game/]]
 
 **** With following modifications:
 - You can't walk outside of the canvas
@@ -16,8 +16,8 @@ game_01/ is in the base a pure copy of this tutorial: [[http://www.lostdecadegam
 
 I won't do anything more with this.
 
-*** game_02/ - Jump on platforms
-game_02/ is based on this tutorial: http://michalbe.blogspot.se/2010/09/simple-game-with-html5-canvas-part-1.html
+*** jumper/ - Jump on platforms
+jumper/ is based on this tutorial: http://michalbe.blogspot.se/2010/09/simple-game-with-html5-canvas-part-1.html
 
 **** With following modifications:
 - I haven't implemented scrolling, at all.
@@ -27,8 +27,8 @@ game_02/ is based on this tutorial: http://michalbe.blogspot.se/2010/09/simple-g
 
 This could be a fairly simple platformer game without too much modifications, but I didn't bother. I won't do anything more with this, and if I would, I would start from the beginning.
 
-*** game_03/ - Nyancat space shooter
-game_03/ is what I think I want to keep working on for a while, I started it from scratch, with inspiration of the tutorials used for game_01/ and game_02/, but decided to do everything my own way :)
+*** nyancat/ - Nyancat space shooter
+nyancat/ is what I think I want to keep working on for a while, I started it from scratch, with inspiration of the tutorials used for game_01/ and game_02/, but decided to do everything my own way :)
 
 It's going to be a Nyancat shooter game in space.
 
