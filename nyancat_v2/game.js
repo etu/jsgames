@@ -10,6 +10,7 @@ var env = {
 	height: 480
 };
 
+
 /**
  * newGame -- Resets values and stuff
  */
@@ -28,6 +29,7 @@ function newGame() {
 	new Player();
 }
 
+
 /**
  * Launch game on load of all resources
  */
@@ -40,22 +42,32 @@ window.addEvent('load', function() {
 	window.requestAnimationFrame(gameLoop);
 });
 
+
 // Record keypresses
 var keyStates = {};
 window.addEvent('keydown', function(e) { if(keyStates[e.key] !== null) keyStates[e.key] = true; });
 window.addEvent('keyup',   function(e) { delete keyStates[e.key]; });
 
+
 /**
  * BaseClass with basic creating of objects and basic structure
  */
 var BaseClass = new Class({
-	initialize: function(x, y) {
+	Implements: [ Options ],
+	options: {
+		lastUpdateTime: Date.now(),
+		x: 0,
+		y: 0
+	},
+	initialize: function(options) {
+		// Override some default options, if I put the random operations
+		// in the options object, it will be the same random for all objects :-)
+		this.options.x = Number.random(0, env.width);
+		this.options.y = Number.random(0, env.height);
+
+		this.setOptions(options);
+
 		env.gameObjects.push(this);
-
-		this.x = x ? x : Number.random(0, env.width);
-		this.y = y ? y : Number.random(0, env.height);
-
-		this.lastUpdateTime = Date.now();
 	},
 	move: function() {
 		this.draw();
@@ -64,37 +76,45 @@ var BaseClass = new Class({
 	}
 });
 
+
 /**
  * Star Class, handles stars
  */
 var Star = new Class({
 	Extends: BaseClass,
-	initialize: function(x, y) {
+	options: {
+		speed: 0,
+		color: '#ffffff',
+		y: 0,
+		x: 0
+	},
+	initialize: function(options) {
 		env.backgroundObjects.push(this);
 
-		this.x = x ? x : Number.random(0, env.width);
-		this.y = y ? y : Number.random(0, env.height);
+		// Override some default options, if I put the random operations
+		// in the options object, it will be the same random for all stars :)
+		this.options.speed = Number.random(25, 50);
+		this.options.y     = Number.random(0, env.height);
+		this.options.x     = Number.random(0, env.width);
 
-		this.speed = Number.random(25, 50);
-		this.color = '#ffffff';
-
-		this.lastUpdateTime = Date.now();
+		// Set options
+		this.setOptions(options);
 	},
 	move: function() {
-		var delta = (Date.now() - this.lastUpdateTime) / 1000;
+		var delta = (Date.now() - this.options.lastUpdateTime) / 1000;
 
 		// Move the star
-		this.x -= (this.speed * delta);
+		this.options.x -= (this.options.speed * delta);
 
 		// If outside, move to the right part of the screen
 		// And set a new speed.
-		if(this.x < 0) {
-			this.x = env.width;
-			this.speed = Number.random(50, 100);
+		if(this.options.x < 0) {
+			this.options.x = env.width;
+			this.options.speed = Number.random(50, 100);
 		}
 
 		// Store update time
-		this.lastUpdateTime = Date.now();
+		this.options.lastUpdateTime = Date.now();
 
 		// Draw it
 		this.draw();
@@ -102,49 +122,55 @@ var Star = new Class({
 	draw: function() {
 		var ctx = env.ctx.background;
 
-		ctx.fillStyle = this.color;
-		ctx.fillRect(this.x, this.y, 1, 1); // X, Y, Width, Height
+		ctx.fillStyle = this.options.color;
+		ctx.fillRect(this.options.x, this.options.y, 1, 1); // X, Y, Width, Height
 	}
 });
+
 
 /**
  * Player Class, handles player
  */
 var Player = new Class({
 	Extends: BaseClass,
-	initialize: function(x, y) {
-		this.parent(x, y);
-		this.speed = 200;
+	options: {
+		speed: 200
+	},
+	initialize: function(options) {
+		this.setOptions(options);
+
+		this.parent(options);
 	},
 	move: function() {
-		var delta = (Date.now() - this.lastUpdateTime) / 1000;
+		var delta = (Date.now() - this.options.lastUpdateTime) / 1000;
 
 		// Some simple movements
-		if(keyStates.up)    this.y -= this.speed * delta;
-		if(keyStates.down)  this.y += this.speed * delta;
-		if(keyStates.left)  this.x -= this.speed * delta;
-		if(keyStates.right) this.x += this.speed * delta;
+		if(keyStates.up)    this.options.y -= this.options.speed * delta;
+		if(keyStates.down)  this.options.y += this.options.speed * delta;
+		if(keyStates.left)  this.options.x -= this.options.speed * delta;
+		if(keyStates.right) this.options.x += this.options.speed * delta;
 
 		// Some simple checks to keep it inside of the canvas
 		// @TODO: Do not use 30 here, use the players width
-		if(this.y < 0)               this.y = 0;
-		if(this.y > env.height - 30) this.y = env.height - 30;
-		if(this.x < 0)               this.x = 0;
-		if(this.x > env.width - 30)  this.x = env.width - 30;
+		if(this.options.y < 0)               this.options.y = 0;
+		if(this.options.y > env.height - 30) this.options.y = env.height - 30;
+		if(this.options.x < 0)               this.options.x = 0;
+		if(this.options.x > env.width - 30)  this.options.x = env.width - 30;
 
 		// Store update time
-		this.lastUpdateTime = Date.now();
+		this.options.lastUpdateTime = Date.now();
 
 		this.draw();
 	},
 	draw: function() {
 		var ctx = env.ctx.screen;
 
-		// @TODO: Render images insdead of a green cube :)
+		// @TODO: Render images instead of a green cube :)
 		ctx.fillStyle = '#00ff00';
-		ctx.fillRect(this.x, this.y, 30, 30);
+		ctx.fillRect(this.options.x, this.options.y, 30, 30);
 	}
 });
+
 
 /**
  * gameLoop which renders stuff
