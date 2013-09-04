@@ -2,12 +2,11 @@
 'use strict';
 
 var env = {
-	ctx: {},
+	ctx:         {},
+	starfield:   false, // Storage of the starfield master object
 	gameObjects: [],
-	backgroundFrame: true,
-	backgroundObjects: [],
-	width:  640,
-	height: 480
+	width:       640,
+	height:      480
 };
 
 
@@ -15,12 +14,7 @@ var env = {
  * newGame -- Resets values and stuff
  */
 function newGame() {
-	// Clear the sky
-	env.backgroundObjects = [];
-	// make a new sky
-	for(var i = 0; i < Number.random(100, 151); i++) {
-		new Star();
-	}
+	env.starfield = new StarField();
 
 	// Clear game objects
 	env.gameObjects = [];
@@ -78,57 +72,6 @@ var BaseClass = new Class({
 
 
 /**
- * Star Class, handles stars
- */
-var Star = new Class({
-	Extends: BaseClass,
-	options: {
-		speed: 0,
-		color: '#ffffff',
-		y: 0,
-		x: 0
-	},
-	initialize: function(options) {
-		env.backgroundObjects.push(this);
-
-		// Override some default options, if I put the random operations
-		// in the options object, it will be the same random for all stars :)
-		this.options.speed = Number.random(25, 50);
-		this.options.y     = Number.random(0, env.height);
-		this.options.x     = Number.random(0, env.width);
-
-		// Set options
-		this.setOptions(options);
-	},
-	move: function() {
-		var delta = (Date.now() - this.options.lastUpdateTime) / 1000;
-
-		// Move the star
-		this.options.x -= (this.options.speed * delta);
-
-		// If outside, move to the right part of the screen
-		// And set a new speed.
-		if(this.options.x < 0) {
-			this.options.x = env.width;
-			this.options.speed = Number.random(50, 100);
-		}
-
-		// Store update time
-		this.options.lastUpdateTime = Date.now();
-
-		// Draw it
-		this.draw();
-	},
-	draw: function() {
-		var ctx = env.ctx.background;
-
-		ctx.fillStyle = this.options.color;
-		ctx.fillRect(this.options.x, this.options.y, 1, 1); // X, Y, Width, Height
-	}
-});
-
-
-/**
  * Player Class, handles player
  */
 var Player = new Class({
@@ -176,18 +119,8 @@ var Player = new Class({
  * gameLoop which renders stuff
  */
 function gameLoop() {
-	/**
-	 * Start rendering background objects
-	 *
-	 * Just render it every second frame to save render power
-	 */
-	if(env.backgroundFrame) {
-		env.ctx.background.clearRect(0, 0, env.width, env.height);
-		Array.each(env.backgroundObjects, function(object) {
-			object.move();
-		});
-	}
-	env.backgroundFrame = !env.backgroundFrame; // Toggle frame for background
+	// Update starfield
+	env.starfield.move();
 
 	/**
 	 * Update Game Objects
@@ -199,3 +132,4 @@ function gameLoop() {
 
 	window.requestAnimationFrame(gameLoop);
 }
+
