@@ -83,7 +83,7 @@ var Player = new Class({
 		height: 40,
 		frame:  0,
 		frameDelta: 0,
-		frameChange: 50 / 1000,
+		frameChange: 100 / 1000,
 		frames: 5
 	},
 	initialize: function(options) {
