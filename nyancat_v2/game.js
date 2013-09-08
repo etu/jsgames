@@ -41,6 +41,7 @@ window.addEvent('load', function() {
 });
 
 
+// Automagic pause if you loose focus of the game
 window.addEvent('blur', function() {
 	pause();
 });
