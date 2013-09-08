@@ -49,7 +49,14 @@ window.addEvent('blur', function() {
 
 // Record keypresses
 var keyStates = {};
-window.addEvent('keydown', function(e) { if(keyStates[e.key] !== null) keyStates[e.key] = true; });
+window.addEvent('keydown', function(e) {
+	if(keyStates[e.key] !== null) keyStates[e.key] = true;
+
+	if(keyStates.p) { // Hotkey for pausing/unpausing
+		if(env.pause) unpause();
+		else pause();
+	}
+});
 window.addEvent('keyup',   function(e) { delete keyStates[e.key]; });
 
 
