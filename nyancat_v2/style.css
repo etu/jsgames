@@ -20,3 +20,12 @@ canvas {
 canvas#background {
 	background: #000;
 }
+
+#pausescreen {
+	position: absolute;
+	width: 640px;
+	height: 480px;
+	color: white;
+	text-align: center;
+	display: none;
+}
