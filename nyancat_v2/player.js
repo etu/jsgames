@@ -55,8 +55,6 @@ var Player = new Class({
 
 		// Store update time
 		this.options.lastUpdateTime = Date.now();
-
-		this.draw();
 	},
 	draw: function() { // Draw the player on the screen
 		var ctx = env.ctx.screen;
@@ -64,15 +62,15 @@ var Player = new Class({
 		var frameoffset = this.options.frame * this.options.width;
 
 		ctx.drawImage(
-			this.options.spritemap, // Image
-			frameoffset,            // Source X Position (within image)
-			0,                      // Source Y Position (within image)
-			this.options.width,     // Source Width
-			this.options.height,    // Source Height
-			this.options.x,         // Canvas X
-			this.options.y,         // Canvas Y
-			this.options.width,     // Canvas Width
-			this.options.height     // Canvas Height
+			this.options.spritemap,     // Image
+			frameoffset,                // Source X Position (within image)
+			0,                          // Source Y Position (within image)
+			this.options.width,         // Source Width
+			this.options.height,        // Source Height
+			Math.round(this.options.x), // Canvas X
+			Math.round(this.options.y), // Canvas Y
+			this.options.width,         // Canvas Width
+			this.options.height         // Canvas Height
 		);
 	}
 });

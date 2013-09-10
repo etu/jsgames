@@ -92,7 +92,7 @@ var Star = new Class({
 	},
 	draw: function(ctx) {
 		ctx.fillStyle = this.options.color;
-		ctx.fillRect(this.options.x, this.options.y, 1, 1); // X, Y, Width, Height
+		ctx.fillRect(Math.round(this.options.x), this.options.y, 1, 1); // X, Y, Width, Height
 	}
 });
 

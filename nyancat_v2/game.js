@@ -81,7 +81,6 @@ var BaseClass = new Class({
 		env.gameObjects.push(this);
 	},
 	move: function() {
-		this.draw();
 	},
 	draw: function() {
 	}
@@ -92,21 +91,30 @@ var BaseClass = new Class({
  * gameLoop which renders stuff
  */
 function gameLoop() {
-	// Update starfield
-	env.starfield.move();
-
 	/**
-	 * Clear entire screen
+	 * Move ALL the things!
 	 */
-	env.ctx.screen.clearRect(0, 0, env.width, env.height);
-
-	// Draw player
 	env.player.move();
 
-	// Draw other game objects
 	Array.each(env.gameObjects, function(object) {
 		object.move();
 	});
+
+	/**
+	 * Draw ALL the things!
+	 */
+	env.ctx.screen.clearRect(0, 0, env.width, env.height);
+
+	env.player.draw();
+
+	Array.each(env.gameObjects, function(object) {
+		object.draw();
+	});
+
+	/**
+	 * Move/Draw starfield, it got it's own canvas and own life anyways
+	 */
+	env.starfield.move();
 
 	if(!env.pause) {
 		window.requestAnimationFrame(gameLoop);
