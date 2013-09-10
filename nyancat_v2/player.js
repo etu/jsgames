@@ -20,10 +20,12 @@ var Player = new Class({
 	initialize: function(options) {
 		// Override some default options, if I put the random operations
 		// in the options object, it will be the same random for all objects :-)
-		this.options.x = Number.random(0, env.width);
-		this.options.y = Number.random(0, env.height);
+		this.options.x   = Number.random(0, env.options.width);
+		this.options.y   = Number.random(0, env.options.height);
 
 		this.setOptions(options);
+
+		this.options.ctx = env.options.ctxs.screen;
 
 		this.options.spritemap.src = 'nyan.png';
 	},
@@ -48,20 +50,19 @@ var Player = new Class({
 		if(keyStates.right) this.options.x += this.options.speed * delta;
 
 		// Some simple checks to keep it inside of the canvas
-		if(this.options.y < 0)                                this.options.y = 0;
-		if(this.options.y > env.height - this.options.height) this.options.y = env.height - this.options.height;
-		if(this.options.x < 0)                                this.options.x = 0;
-		if(this.options.x > env.width  - this.options.width)  this.options.x = env.width - this.options.width;
+		if(this.options.y < 0)                                        this.options.y = 0;
+		if(this.options.y > env.options.height - this.options.height) this.options.y = env.options.height - this.options.height;
+		if(this.options.x < 0)                                        this.options.x = 0;
+		if(this.options.x > env.options.width  - this.options.width)  this.options.x = env.options.width - this.options.width;
 
 		// Store update time
 		this.options.lastUpdateTime = Date.now();
 	},
 	draw: function() { // Draw the player on the screen
-		var ctx = env.ctx.screen;
 
 		var frameoffset = this.options.frame * this.options.width;
 
-		ctx.drawImage(
+		this.options.ctx.drawImage(
 			this.options.spritemap,     // Image
 			frameoffset,                // Source X Position (within image)
 			0,                          // Source Y Position (within image)

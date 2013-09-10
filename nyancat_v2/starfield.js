@@ -17,7 +17,7 @@ var StarField = new Class({
 		this.setOptions(options);
 
 		// Set reference to canvas context
-		this.options.ctx = env.ctx.background;
+		this.options.ctx = env.options.ctxs.background;
 
 		// Populate list of stars
 		for(var i = 0; i < Number.random(100, 150); i++) {
@@ -47,7 +47,7 @@ var StarField = new Class({
 
 		// Clear canvas if not warping
 		if(!this.options.warp) {
-			that.options.ctx.clearRect(0, 0, env.width, env.height);
+			that.options.ctx.clearRect(0, 0, env.options.width, env.options.height);
 		}
 
 		// Render stars
@@ -73,8 +73,8 @@ var Star = new Class({
 		// Override some default options, if I put the random operations
 		// in the options object, it will be the same random for all stars :)
 		this.options.speed = Number.random(25, 50);
-		this.options.y     = Number.random(0, env.height);
-		this.options.x     = Number.random(0, env.width);
+		this.options.y     = Number.random(0, env.options.height);
+		this.options.x     = Number.random(0, env.options.width);
 
 		// Set options
 		this.setOptions(options);
@@ -86,7 +86,7 @@ var Star = new Class({
 		// If outside, move to the right part of the screen
 		// And set a new speed.
 		if(this.options.x < 0) {
-			this.options.x = env.width;
+			this.options.x = env.options.width;
 			this.options.speed = Number.random(50, 100);
 		}
 	},

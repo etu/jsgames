@@ -1,60 +1,39 @@
 
 'use strict';
 
-var env = {
-	ctx:         {},
-	starfield:   false, // Storage of the starfield master object
-	gameObjects: [],
-	width:       640,
-	height:      480,
-	pause:       false
-};
-
-
-/**
- * newGame -- Resets values and stuff
- */
-function newGame() {
-	// Clear game objects
-	env.gameObjects = [];
-
-	env.starfield = new StarField(); // Replace Starfield
-	env.player    = new Player();    // Replace Player
-}
+var env, keyStates = {};
 
 
 /**
  * Launch game on load of all resources
  */
 window.addEvent('load', function() {
-	env.ctx.background = $('background').getContext('2d');
-	env.ctx.screen     = $('screen').getContext('2d');
+	new Enviroment();
 
-	newGame();
-
-	window.requestAnimationFrame(gameLoop);
+	window.requestAnimationFrame((function () {
+		env.gameLoop();
+	}));
 
 	// unpause button :)
 	$('unpause').addEvent('click', function(e) {
-		unpause();
+		env.unpause();
 	});
 });
 
 
 // Automagic pause if you loose focus of the game
 window.addEvent('blur', function() {
-	pause();
+	env.pause();
 });
 
 
 // Record keypresses
-var keyStates = {};
 window.addEvent('keydown', function(e) {
 	if(keyStates[e.key] !== null) keyStates[e.key] = true;
 
 	if(keyStates.p) { // Hotkey for pausing/unpausing
-		if(env.pause) unpause();
-		else pause();
+		if(env.options.pause) env.unpause();
+		else env.pause();
 	}
 });
 window.addEvent('keyup',   function(e) { delete keyStates[e.key]; });
@@ -85,64 +64,3 @@ var BaseClass = new Class({
 	draw: function() {
 	}
 });
-
-
-/**
- * gameLoop which renders stuff
- */
-function gameLoop() {
-	/**
-	 * Move ALL the things!
-	 */
-	env.player.move();
-
-	Array.each(env.gameObjects, function(object) {
-		object.move();
-	});
-
-	/**
-	 * Draw ALL the things!
-	 */
-	env.ctx.screen.clearRect(0, 0, env.width, env.height);
-
-	env.player.draw();
-
-	Array.each(env.gameObjects, function(object) {
-		object.draw();
-	});
-
-	/**
-	 * Move/Draw starfield, it got it's own canvas and own life anyways
-	 */
-	env.starfield.move();
-
-	if(!env.pause) {
-		window.requestAnimationFrame(gameLoop);
-	}
-}
-
-/**
- * Function to unpause the game when it's paused
- */
-function unpause() {
-	var time = Date.now();
-
-	$('pausescreen').setStyle('display', 'none');
-
-	// update timers
-	env.player.options.lastUpdateTime = time;
-	env.starfield.options.lastUpdateTime = time;
-
-	env.pause = false;
-
-	window.requestAnimationFrame(gameLoop);
-}
-
-/**
- * Function to pause the game
- */
-function pause() {
-	$('pausescreen').setStyle('display', 'block');
-
-	env.pause = true;
-}
