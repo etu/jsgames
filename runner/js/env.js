@@ -1,5 +1,6 @@
 
 var Environment = new Class({
+	map: undefined,
 	ctxs: {},
 	width: 640,
 	height: 480,
@@ -16,6 +17,7 @@ var Environment = new Class({
 		this.ctxs.screen     = $('screen').getContext('2d');
 
 
+		this.map        = new Map({ctx:    this.ctxs.screen, env: this});
 		this.player     = new Player({ctx: this.ctxs.screen, env: this});
 		this.background = 'bg';
 
@@ -30,6 +32,7 @@ var Environment = new Class({
 		var delta = (Date.now() - this.lastUpdateTime) / 1000;
 
 		this.player.update(delta);
+		this.map.update(delta, 200);
 
 		this.lastUpdateTime = Date.now();
 	},
@@ -37,6 +40,7 @@ var Environment = new Class({
 		this.ctxs.screen.clearRect(0, 0, this.width, this.height);
 
 		this.player.draw();
+		this.map.draw();
 	},
 	mainLoop: function() {
 		this.update();
