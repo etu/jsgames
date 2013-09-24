@@ -22,14 +22,12 @@ var Map = new Class({
 	update: function(delta, speed) {
 		Array.each(this.map, function(tile) {
 			tile.update(delta, speed);
-		});
+		}, this);
 	},
 	draw: function() {
-		var self = this;
-
 		Array.each(this.map, function(tile) {
-			tile.draw(self.ctx);
-		});
+			tile.draw(this.ctx);
+		}, this);
 	}
 });
 
