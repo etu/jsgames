@@ -7,12 +7,10 @@ var Environment = new Class({
 	player: undefined,
 	objects: [],
 	background: undefined,
+	loopWrapper: undefined,
 	lastUpdateTime: undefined,
 
 	initialize: function(options) {
-		var self = this;
-
-
 		this.ctxs.background = $('background').getContext('2d');
 		this.ctxs.screen     = $('screen').getContext('2d');
 
@@ -22,7 +20,7 @@ var Environment = new Class({
 		this.background = 'bg';
 
 
-		this.loopWrapper    = (function () { self.mainLoop(); });
+		this.loopWrapper    = (function (that) { that.mainLoop(); }).pass(this);
 		this.lastUpdateTime = Date.now();
 
 
